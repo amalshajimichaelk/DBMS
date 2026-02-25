@@ -1,0 +1,56 @@
+create table customers(CustomerID int primary key , CustomerName varchar(30), ContactNo int, Address varchar(30), City varchar(30), PostalCode int, Country varchar(30));
+create table Employees(EmployeeID int primary key, LastName varchar(20), FirstName varchar(20), BirthDate date, Photo varchar(30)); 
+create table  Orders(OrderID int primary key,CustomerID int,EmployeeID int, foreign key (CustomerID) references customers, foreign key (EmployeeID) references Employees, OrderDate date, ShipperID int);
+
+insert into customers values(101, 'abhijith', 9638472142, 'Parambil', 'Kottayam', 675643, 'India');
+insert into customers values(102, 'abhishek', 9636281782, 'Illathu', 'Kottayam', 675242, 'India');
+insert into customers values(103, 'abin', 9638278579, 'Kallattu', 'Pathanamthitta', 675383, 'India');
+insert into customers values(104, 'adarsh', 9638474732, 'Poovathinkal', 'Kannur', 675943, 'India');
+insert into customers values(105, 'alan', 9634612142, 'Madathil', 'Kottayam', 673443, 'India');
+insert into customers values(106, 'alex', 963364579, 'Poriyathu', 'Chicago', 785383, 'USA');
+insert into customers values(107, 'adwaith', 96324374732, 'Palathinkal', 'California', 785943, 'USA');
+insert into customers values(108, 'aldus', 9634656142, 'Kuttiyankal', 'New York', 783443, 'USA');
+select * from customers;
+
+insert into employees values(201, 'krishna', 'anand', '2/3/2006', 'anand.png'); 
+insert into employees values(202, 'philip', 'aby', '4/9/2006', 'aby.png'); 
+insert into employees values(203, 'michael', 'amal', '8/3/2006', 'amal.png'); 
+insert into employees values(204, 'dakait', 'rehman', '11/9/2006', 'rehman.png'); 
+insert into employees values(205, 'antony', 'vijay', '3/5/2006', 'vijay.png');
+insert into employees values(206, 'philipose', 'abymon', '6/9/1972', 'abymon.png'); 
+insert into employees values(207, 'mathew', 'amala', '8/6/1975', 'amala.png'); 
+insert into employees values(208, 'hussain', 'rohit', '14/9/1986', 'rohit.png'); 
+insert into employees values(209, 'paul', 'vijayan', '6/5/1979', 'vijayan.png'); 
+select * from employees;
+truncate table orders;
+insert into orders values(301, 101, 201, '27/02/2025', 401);
+insert into orders values(302, 102, 202, '19/02/2025', 402);
+insert into orders values(303, 106, 203, '16/02/2025', 403);
+insert into orders values(304, 108, 204, '13/02/2025', 404);
+insert into orders values(305, 107, 205, '24/02/2025', 405);
+
+select * from orders;
+
+select * from customers order by customername;
+select * from orders order by orderdate;
+select * from employees where birthdate > '31/12/1980' order by birthdate desc;
+select * from orders where customerid in (
+select customerid from customers where country='USA' )
+order by orderdate desc;
+select distinct(OrderDate),CustomerName from Orders,Customers where Country='USA' order by Orderdate desc;
+SELECT CustomerID, COUNT(*) AS TotalOrders
+FROM Orders
+GROUP BY CustomerID;
+select distinct(CustomerName),count(OrderDate) from customers,Orders group by Customername;
+insert into orders values(306, 107, 205, '24/02/2025', 406);
+insert into orders values(307, 107, 205, '24/02/2025', 407);
+SELECT CustomerID, COUNT(*) AS TotalOrders
+FROM Orders
+GROUP BY CustomerID
+HAVING COUNT(*) > 2;
+select distinct(city),count(CustomerID) from customers group by city;
+insert into customers values(109, 'alda', 9655612142, 'Thadathil', 'Kottayam', 673443, 'India');
+SELECT City, COUNT(*) AS TotalCustomers
+FROM Customers
+GROUP BY City
+HAVING COUNT(*) > 3;
