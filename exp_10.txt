@@ -1,0 +1,76 @@
+Create Table Customerdetails20(Cust_Id Int, Cust_Name Varchar(30), Address Varchar(30));
+Create Table Empdetails20(Empid Int, Empname Varchar(30), Salary Int);
+Create Table Custcount20(Count_Row Int);
+Insert Into Custcount20 Values(0);
+Set Serveroutput On;
+SHOW SERVEROUT;
+Create Or Replace Trigger Tri After Insert On Customerdetails20
+For Each Row
+Begin
+  Dbms_Output.Put_Line('A row is inserted');
+End;
+/
+Insert Into Customerdetails20 Values(1,'Anu','Kochi');
+
+Create Or Replace Trigger Trig After Insert On Empdetails20
+For Each Row
+When(New.Salary>20000)
+Begin
+  Dbms_Output.Put_Line('Salary is greater than 20000');
+end;
+/
+Insert Into Empdetails20 (Empid, Empname, Salary) Values(2, 'Alen', 30000);
+Select * From Custcount20;
+
+Create Or Replace Trigger Trigg Before Insert Or Delete On Customerdetails20
+For Each Row
+Begin
+  If Deleting Then
+    Update Custcount20
+    Set Count_Row=Count_Row-1;
+  Else
+    Update Custcount20
+    Set Count_Row=Count_Row+1;
+  End If;
+End;
+/
+Insert Into Customerdetails20 Values(2,'Anand','Kottayam');
+Select * From Custcount20;
+Delete From Customerdetails20 Where Cust_Id=1;
+
+Create Or Replace Function Factorial(N Int)
+Return Int Is
+  Fact Int:=1;
+Begin
+  For I In 1..N Loop
+    Fact := Fact*I;
+  End Loop;
+  Return Fact;
+End;
+/
+Declare
+  Result Int;
+Begin
+  Result := Factorial(5);
+  Dbms_Output.Put_Line('Factorial is ' || Result);
+End;
+/
+
+Create Table Std_20(Rollno Number Primary Key, Marks Number, Phone_No Number);
+Insert Into Std_20 Values(1, 32, 9823187618);
+Insert Into Std_20 Values(2, 29, 9786727218);
+Insert Into Std_20 Values(3, 40, 9827987987);
+Insert Into Std_20 Values(4, 30, 9136148429);
+Insert Into Std_20 Values(5, 25, 9546197981);
+
+Create Or Replace Procedure Pr1 As
+Begin
+  Update Std_20
+  Set Marks=Marks+(Marks*0.05);
+End;
+/
+Begin
+  Pr1;
+End;
+/
+select * from std_20;
